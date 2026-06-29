@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Geology Slides: Weathering & Erosion</title>
+    <!-- Tailwind CSS for high-fidelity presentation styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #1e293b;
+        }
+        /* Custom ranges matching Slide 07 styling */
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 9999px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #0284c7;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            margin-top: -6px;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-8 select-none">
+
+    <!-- Slide Presentation Shell Navigation -->
+    <header class="max-w-5xl w-full mx-auto flex justify-between items-center border-b border-slate-100 pb-4 mb-6">
+        <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span class="text-xs font-extrabold tracking-widest text-slate-400 uppercase">Interactive Courseware</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="goToSlide(6)" id="nav-s6" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-[#0f172a] text-white shadow-sm transition-all">
+                Slide 06: Weathering
+            </button>
+            <button onclick="goToSlide(7)" id="nav-s7" class="px-4 py-1.5 text-xs font-semibold rounded-lg text-slate-400 hover:bg-slate-50 transition-all">
+                Slide 07: Erosion
+            </button>
+        </div>
+    </header>
+
+    <!-- Slide Viewports -->
+    <main class="flex-grow max-w-5xl w-full mx-auto flex items-center justify-center">
+
+        <!-- ========================================== -->
+        <!-- SLIDE 06: WEATHERING (Matches image_cddb19.png) -->
+        <!-- ========================================== -->
+        <section id="slide-06" class="w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-2">
+            
+            <!-- Left Side Control Column -->
+            <div class="md:col-span-6 space-y-6">
+                <div class="flex justify-between items-start">
+                    <h2 class="text-2xl font-black text-[#0f172a] tracking-tight">Weathering: How Rocks Break</h2>
+                    <span class="text-[11px] font-extrabold tracking-wider text-slate-400 uppercase mt-1">SLIDE 06 OF 10</span>
+                </div>
+
+                <div class="space-y-3">
+                    <span class="text-xs font-bold text-slate-500 block">Select an active trigger to watch:</span>
+                    
+                    <div class="space-y-3" id="weathering-buttons-container">
+                        <!-- Solid Rock (Start) -->
+                        <button onclick="selectTrigger('solid')" id="btn-solid" class="w-full flex items-center justify-between p-3.5 text-left border rounded-xl text-xs font-bold tracking-wide transition-all bg-[#fff7ed] border-[#f97316] text-slate-800 shadow-sm">
+                            <span>Solid Rock (Start)</span>
+                            <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                        </button>
+
+                        <!-- Ice Wedging -->
+                        <button onclick="selectTrigger('ice')" id="btn-ice" class="w-full flex items-center justify-between p-3.5 text-left border border-slate-200/90 rounded-xl text-xs font-bold tracking-wide transition-all text-slate-600 bg-white hover:bg-slate-50">
+                            <span>1. Ice Wedging (Freezing)</span>
+                            <span class="text-sky-500 font-extrabold text-sm">❄</span>
+                        </button>
+
+                        <!-- Rain Dissolving -->
+                        <button onclick="selectTrigger('rain')" id="btn-rain" class="w-full flex items-center justify-between p-3.5 text-left border border-slate-200/90 rounded-xl text-xs font-bold tracking-wide transition-all text-slate-600 bg-white hover:bg-slate-50">
+                            <span>2. Rain Dissolving (Acid)</span>
+                            <span class="text-emerald-500 font-extrabold text-sm">🌧</span>
+                        </button>
+
+                        <!-- Root Wedging -->
+                        <button onclick="selectTrigger('root')" id="btn-root" class="w-full flex items-center justify-between p-3.5 text-left border border-slate-200/90 rounded-xl text-xs font-bold tracking-wide transition-all text-slate-600 bg-white hover:bg-slate-50">
+                            <span>3. Root Wedging (Plants)</span>
+                            <span class="text-green-600 font-extrabold text-sm">🌲</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Visual Column -->
+            <div class="md:col-span-6">
+                <!-- Outer Light Slate Wrap Box -->
+                <div class="bg-[#f8fafc]/90 border border-slate-100 rounded-2xl p-6 min-h-[380px] flex flex-col justify-between items-center shadow-sm">
+                    
+                    <!-- White Nested Visual Card -->
+                    <div class="w-full bg-white rounded-xl p-4 flex-grow flex items-center justify-center relative shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-slate-100/60 min-h-[220px]">
+                        <svg id="weathering-svg" class="w-64 h-48" viewBox="0 0 300 200">
+                            <!-- Injected dynamically based on trigger -->
+                        </svg>
+                    </div>
+
+                    <!-- Under-labels Frame -->
+                    <div class="text-center space-y-1.5 mt-5 max-w-sm">
+                        <h4 id="lbl-title" class="font-black text-sm text-[#0f172a]">Perfect Solid Boulder</h4>
+                        <p id="lbl-desc" class="text-[11px] text-slate-500 leading-relaxed font-medium">A fresh rock with zero cracks. Rain and ice cannot seep inside yet.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SLIDE 07: EROSION (Matches image_cdd77b.png) -->
+        <!-- ========================================== -->
+        <section id="slide-07" class="w-full hidden grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-2">
+            
+            <!-- Left Side Simulation Canvas (Dark Theme) -->
+            <div class="md:col-span-6">
+                <div class="bg-[#0b1329] rounded-2xl p-6 min-h-[360px] flex flex-col justify-center items-center relative overflow-hidden shadow-lg border border-[#1e293b]">
+                    
+                    <!-- Chronological Yellow Overlay Badge -->
+                    <div class="absolute top-12 left-1/2 transform -translate-x-1/2 z-20 bg-black/45 px-3.5 py-1 rounded-md border border-white/5 backdrop-blur-sm">
+                        <span id="canvas-year" class="text-xs font-extrabold text-yellow-400 tracking-wider font-mono">0.7 Million Years</span>
+                    </div>
+
+                    <!-- Dynamic Canyon Carver SVG -->
+                    <div class="w-full flex items-center justify-center relative z-10">
+                        <svg id="canyon-svg" class="w-full h-48" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid meet">
+                            <!-- Renders canyon graphics dynamically matching timeline variables -->
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Configuration Column -->
+            <div class="md:col-span-6 space-y-6">
+                <div class="flex justify-between items-start">
+                    <h2 class="text-2xl font-black text-[#0f172a] tracking-tight">Erosion: How Water Carves</h2>
+                    <span class="text-[11px] font-extrabold tracking-wider text-slate-400 uppercase mt-1">SLIDE 07 OF 10</span>
+                </div>
+
+                <!-- Custom Light slate card wrapper -->
+                <div class="bg-[#f4f7fa]/90 border border-slate-100 rounded-2xl p-6 space-y-6 shadow-sm">
+                    
+                    <!-- Input Range Slide Component -->
+                    <div class="space-y-3">
+                        <span class="text-[11px] font-extrabold text-[#0284c7] tracking-wider block">DRAG THE TIMELINE:</span>
+                        
+                        <input type="range" id="erosion-slider" min="0" max="100" value="12" oninput="handleErosionChange(this.value)" class="w-full appearance-none bg-transparent cursor-pointer">
+                        
+                        <div class="flex justify-between text-[10px] font-bold text-slate-400 tracking-wider uppercase">
+                            <span>Start (Flat Stream)</span>
+                            <span>6M Years (Deep Gorge)</span>
+                        </div>
+                    </div>
+
+                    <!-- Statistics list exactly matching labels & values -->
+                    <div class="border-t border-slate-200/60 pt-5 space-y-4">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="font-bold text-slate-400 uppercase tracking-wide text-[10px]">Canyon Depth:</span>
+                            <span id="txt-depth" class="font-extrabold text-[#0f172a] text-sm font-mono">192 meters</span>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="font-bold text-slate-400 uppercase tracking-wide text-[10px]">Sediment Carried:</span>
+                            <span id="txt-sediment" class="font-extrabold text-[#0284c7] text-sm">Light mud load</span>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="font-bold text-slate-400 uppercase tracking-wide text-[10px]">Stream Shape:</span>
+                            <span id="txt-shape" class="font-extrabold text-[#0f172a] text-sm">Shallow River Slot</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Slide Indicators -->
+    <footer class="max-w-5xl w-full mx-auto border-t border-slate-100 pt-4 mt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-400 font-bold uppercase tracking-widest gap-2">
+        <span>Curriculum Unit: Surficial Processes</span>
+        <span>Simulated Reality Engine v2.0</span>
+    </footer>
+
+    <!-- Presentation Engine Scripts -->
+    <script>
+        // ==========================================
+        // PRESENTATION FLOW CONTROL
+        // ==========================================
+        function goToSlide(num) {
+            const s6 = document.getElementById('slide-06');
+            const s7 = document.getElementById('slide-07');
+            const nav6 = document.getElementById('nav-s6');
+            const nav7 = document.getElementById('nav-s7');
+
+            if (num === 6) {
+                s6.classList.remove('hidden');
+                s7.classList.add('hidden');
+                nav6.className = "px-4 py-1.5 text-xs font-bold rounded-lg bg-[#0f172a] text-white shadow-sm transition-all";
+                nav7.className = "px-4 py-1.5 text-xs font-semibold rounded-lg text-slate-400 hover:bg-slate-50 transition-all";
+                drawWeatheringState();
+            } else {
+                s7.classList.remove('hidden');
+                s6.classList.add('hidden');
+                nav7.className = "px-4 py-1.5 text-xs font-bold rounded-lg bg-[#0f172a] text-white shadow-sm transition-all";
+                nav6.className = "px-4 py-1.5 text-xs font-semibold rounded-lg text-slate-400 hover:bg-slate-50 transition-all";
+                handleErosionChange(document.getElementById('erosion-slider').value);
+            }
+        }
+
+        // ==========================================
+        // SLIDE 06: WEATHERING MODEL ENGINE
+        // ==========================================
+        let currentTrigger = 'solid';
+
+        const triggerData = {
+            solid: {
+                title: "Perfect Solid Boulder",
+                desc: "A fresh rock with zero cracks. Rain and ice cannot seep inside yet."
+            },
+            ice: {
+                title: "1. Ice Wedging (Freezing)",
+                desc: "Water enters tiny fissures. As temperatures drop below freezing, the water expands by 9%, acting as a wedge to split the rock."
+            },
+            rain: {
+                title: "2. Rain Dissolving (Acid)",
+                desc: "Slightly acidic rainwater reacts with limestone or mineral veins. The stone slowly dissolves and pits over time."
+            },
+            root: {
+                title: "3. Root Wedging (Plants)",
+                desc: "Plants germinate in cracks. Their root systems expand with immense pressure, forcing the rock to fracture and separate."
+            }
+        };
+
+        function selectTrigger(id) {
+            currentTrigger = id;
+            const buttons = ['solid', 'ice', 'rain', 'root'];
+            
+            // Loop buttons styling perfectly matching design borders
+            buttons.forEach(b => {
+                const btn = document.getElementById(`btn-${b}`);
+                if (b === id) {
+                    btn.className = "w-full flex items-center justify-between p-3.5 text-left border rounded-xl text-xs font-bold tracking-wide transition-all bg-[#fff7ed] border-[#f97316] text-slate-800 shadow-sm";
+                } else {
+                    btn.className = "w-full flex items-center justify-between p-3.5 text-left border border-slate-200/90 rounded-xl text-xs font-bold tracking-wide transition-all text-slate-600 bg-white hover:bg-slate-50";
+                }
+            });
+
+            // Update Labeling below graphic
+            document.getElementById('lbl-title').textContent = triggerData[id].title;
+            document.getElementById('lbl-desc').textContent = triggerData[id].desc;
+
+            drawWeatheringState();
+        }
+
+        function drawWeatheringState() {
+            const svg = document.getElementById('weathering-svg');
+            let graphics = '';
+
+            if (currentTrigger === 'solid') {
+                graphics = `
+                    <g transform="translate(30, 10)">
+                        <!-- Beautiful isometric solid shaded polygon face mapping -->
+                        <polygon points="120,30 200,45 220,130 110,140 50,90" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2.5"/>
+                        <polygon points="120,30 200,45 110,140" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+                        <polygon points="50,90 120,30 110,140" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2"/>
+                        <!-- Top Highlights -->
+                        <line x1="120" y1="30" x2="110" y2="140" stroke="#f8fafc" stroke-width="1.5"/>
+                    </g>
+                `;
+            } else if (currentTrigger === 'ice') {
+                graphics = `
+                    <g transform="translate(30, 10)">
+                        <!-- Left split component shifting outward -->
+                        <g transform="translate(-12, 4)">
+                            <polygon points="50,90 120,30 110,140" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2.5"/>
+                        </g>
+                        <!-- Right split component shifting outward -->
+                        <g transform="translate(12, -4)">
+                            <polygon points="120,30 200,45 220,130 110,140" fill="#94a3b8" opacity="0.8" stroke="#64748b" stroke-width="2.5"/>
+                        </g>
+                        <!-- Bright sky-blue freezing wedge filling core gap -->
+                        <polygon points="112,31 128,29 130,126 104,142" fill="#0ea5e9" opacity="0.95" stroke="#38bdf8" stroke-width="1.5"/>
+                    </g>
+                `;
+            } else if (currentTrigger === 'rain') {
+                graphics = `
+                    <g transform="translate(30, 10)">
+                        <!-- Shaded weathering pitted bedrock -->
+                        <polygon points="120,30 200,45 220,130 110,140 50,90" fill="#94a3b8" stroke="#475569" stroke-width="2.5"/>
+                        
+                        <!-- Etched dissolve holes -->
+                        <circle cx="100" cy="70" r="6" fill="#475569" opacity="0.65"/>
+                        <circle cx="150" cy="60" r="8" fill="#475569" opacity="0.65"/>
+                        <circle cx="120" cy="110" r="5" fill="#475569" opacity="0.65"/>
+                        <circle cx="165" cy="100" r="7" fill="#475569" opacity="0.65"/>
+
+                        <!-- Raindrop graphic lines descending -->
+                        <line x1="90" y1="-10" x2="85" y2="10" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="130" y1="-20" x2="125" y2="5" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="170" y1="-15" x2="165" y2="10" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+                `;
+            } else if (currentTrigger === 'root') {
+                graphics = `
+                    <g transform="translate(30, 10)">
+                        <!-- Separating halves with deep botanic roots -->
+                        <g transform="translate(-18, 6)">
+                            <polygon points="50,90 120,30 110,140" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2"/>
+                        </g>
+                        <g transform="translate(18, -6)">
+                            <polygon points="120,30 200,45 220,130 110,140" fill="#94a3b8" stroke="#64748b" stroke-width="2"/>
+                        </g>
+                        <!-- Thicker primary root dividing boulder -->
+                        <path d="M 120,15 Q 115,80 122,150" fill="none" stroke="#15803d" stroke-width="7" stroke-linecap="round"/>
+                        <!-- Secondary root networks -->
+                        <path d="M 118,60 Q 90,95 80,120" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M 120,90 Q 140,115 155,135" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"/>
+                        
+                        <!-- Emergent botanical leaf sprouts -->
+                        <path d="M 120,15 C 110,5 105,0 95,5" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M 120,15 C 130,5 135,0 145,5" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"/>
+                    </g>
+                `;
+            }
+
+            svg.innerHTML = graphics;
+        }
+
+        // ==========================================
+        // SLIDE 07: EROSION MODEL ENGINE
+        // ==========================================
+        function handleErosionChange(slideValue) {
+            const val = parseInt(slideValue);
+            
+            // Map timeline slider value to exact metrics shown in Slide 07
+            // At value=12 (approx. 0.7 Million Years): Canyon depth is exactly 192m, Sediment is Light mud load, shape is Shallow River Slot
+            const millionYears = (0.1 + (val * 0.059)).toFixed(1);
+            const metersDepth = Math.round(15 + (val * 17.7));
+            
+            let sedimentStatus = "Clear stream runoff";
+            let sedimentColorClass = "text-slate-400";
+            if (val > 4 && val <= 25) {
+                sedimentStatus = "Light mud load";
+                sedimentColorClass = "text-[#0284c7]"; // Light blue highlight
+            } else if (val > 25 && val <= 65) {
+                sedimentStatus = "Moderate silt slurry";
+                sedimentColorClass = "text-amber-500";
+            } else if (val > 65) {
+                sedimentStatus = "Debris heavy flood torrent";
+                sedimentColorClass = "text-red-500";
+            }
+
+            let shapeStatus = "Flat upland run";
+            if (val > 4 && val <= 28) {
+                shapeStatus = "Shallow River Slot";
+            } else if (val > 28 && val <= 68) {
+                shapeStatus = "Deepening V-Channel";
+            } else if (val > 68) {
+                shapeStatus = "V-Shaped Rock Gorge";
+            }
+
+            // Update UI element labels
+            document.getElementById('canvas-year').textContent = `${millionYears} Million Years`;
+            document.getElementById('txt-depth').textContent = `${metersDepth} meters`;
+            document.getElementById('txt-sediment').textContent = sedimentStatus;
+            document.getElementById('txt-sediment').className = `font-extrabold text-sm ${sedimentColorClass}`;
+            document.getElementById('txt-shape').textContent = shapeStatus;
+
+            drawCanyonState(val);
+        }
+
+        function drawCanyonState(value) {
+            const svg = document.getElementById('canyon-svg');
+            const depthFactor = value / 100; // normalized 0 to 1
+
+            const leftRimX = 130 - (depthFactor * 45);
+            const rightRimX = 270 + (depthFactor * 45);
+            const riverY = 120 + (depthFactor * 95);
+            const riverWidth = 55 - (depthFactor * 35);
+
+            svg.innerHTML = `
+                <!-- Stratified bedrock baseline shading underneath -->
+                <rect x="0" y="110" width="400" height="130" fill="#2d1710" opacity="0.6" />
+
+                <!-- Left Canyon Wall Block structure matching image_cdd77b.png -->
+                <path d="M 0,110 L ${leftRimX},110 Q ${leftRimX + 15},${110 + (riverY-110)*0.55} ${200 - riverWidth/2},${riverY} L 0,${riverY} Z" fill="#64748b" stroke="#475569" stroke-width="1.5"/>
+
+                <!-- Right Canyon Wall Block structure matching image_cdd77b.png -->
+                <path d="M 400,110 L ${rightRimX},110 Q ${rightRimX - 15},${110 + (riverY-110)*0.55} ${200 + riverWidth/2},${riverY} L 400,${riverY} Z" fill="#64748b" stroke="#475569" stroke-width="1.5"/>
+
+                <!-- Cyan/Blue River Oval base matching reference -->
+                <ellipse cx="200" cy="${riverY}" rx="${riverWidth}" ry="${10 - (depthFactor * 5)}" fill="#00b4d8"/>
+                <ellipse cx="200" cy="${riverY}" rx="${riverWidth * 0.7}" ry="${6 - (depthFactor * 3)}" fill="#90e0ef" opacity="0.6"/>
+            `;
+        }
+
+        // Initialize view graphics on first load
+        window.addEventListener('DOMContentLoaded', () => {
+            drawWeatheringState();
+        });
+    </script>
+</body>
+</html>
